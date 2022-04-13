@@ -20,7 +20,8 @@
   ],
   "scripts": {
     "build": "stencil build",
-    "dev": "stencil build --dev"
+    "dev": "stencil build --dev",
+    "test": "stencil test --spec --passWithNoTests"
   },
   "dependencies": {
     "@stencil/core": "^2.13.0"
