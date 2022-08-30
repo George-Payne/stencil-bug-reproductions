@@ -1,5 +1,7 @@
-import { Component, Prop, h } from '@stencil/core';
-import { format } from '../../utils/utils';
+import { Component, h, State } from '@stencil/core';
+
+let i = 0;
+const nextKey = () => `key-${i++}`;
 
 @Component({
   tag: 'my-component',
@@ -7,26 +9,23 @@ import { format } from '../../utils/utils';
   shadow: true,
 })
 export class MyComponent {
-  /**
-   * The first name
-   */
-  @Prop() first: string;
+  @State() currentKey: string = nextKey();
 
-  /**
-   * The middle name
-   */
-  @Prop() middle: string;
-
-  /**
-   * The last name
-   */
-  @Prop() last: string;
-
-  private getText(): string {
-    return format(this.first, this.middle, this.last);
+  componentDidLoad() {
+    setInterval(() => {
+      this.currentKey = nextKey();
+    }, 3_000);
   }
 
   render() {
-    return <div>Hello, World! I'm {this.getText()}</div>;
+    return (
+      <div ref={this.captureDiv} key={this.currentKey}>
+        {this.currentKey}
+      </div>
+    );
   }
+
+  private captureDiv = (r: HTMLDivElement | null) => {
+    console.log(this.currentKey, r);
+  };
 }
